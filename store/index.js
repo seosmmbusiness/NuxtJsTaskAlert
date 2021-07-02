@@ -1,3 +1,5 @@
+const URL = 'https://europe-west1-st-testcase.cloudfunctions.net'
+
 export const state = () => {
   return {
     login: { id: null, name: '' },
@@ -38,10 +40,14 @@ export const mutations = {
 export const actions = {
   async loginAction({ state, commit, dispatch }) {
     commit('SET_loading', true)
+
     await this.$axios
-      .$post('https://europe-west1-st-testcase.cloudfunctions.net/api/auth')
+      .$post(URL + '/api/auth')
       .then((res) => {
         commit('SET_login', res)
+        dispatch('loadTasks').then(() => {
+          commit('SET_loading', false)
+        })
       })
       .catch((error) => {
         if (error.response) {
@@ -50,30 +56,36 @@ export const actions = {
             color: 'red',
           })
         }
-      })
-      .then(() => {
-        dispatch('loadTasks').then(() => {
-          commit('SET_loading', false)
-        })
       })
   },
 
   async loadTasks({ commit, state }) {
     await this.$axios
-      .$get(
-        'https://europe-west1-st-testcase.cloudfunctions.net/api/reminders?userId=' +
-          state.login.id
-      )
+      .$get(URL + '/api/reminders?userId=' + state.login.id)
       .then((res) => {
         commit('SET_activeTasks', res)
       })
       .catch((error) => {
         if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
           commit('notification/PUSH_Notification', {
             message: error.response.data.error,
             color: 'red',
           })
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
         }
+        console.log(error.config)
       })
   },
 
@@ -81,8 +93,7 @@ export const actions = {
     commit('SET_loading', true)
     await this.$axios
       .$post(
-        'https://europe-west1-st-testcase.cloudfunctions.net/api/reminders?userId=' +
-          state.login.id,
+        URL + '/api/reminders?userId=' + state.login.id,
         JSON.stringify(state.currentTask),
         {
           headers: {
@@ -90,14 +101,6 @@ export const actions = {
           },
         }
       )
-      .catch((error) => {
-        if (error.response) {
-          commit('notification/PUSH_Notification', {
-            message: error.response.data.error,
-            color: 'red',
-          })
-        }
-      })
       .then(() => {
         dispatch('loadTasks').then(() => {
           commit('SET_loading', false)
@@ -107,25 +110,34 @@ export const actions = {
           })
         })
       })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          commit('notification/PUSH_Notification', {
+            message: error.response.data.error,
+            color: 'red',
+          })
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
+        }
+        console.log(error.config)
+      })
   },
 
   async deleteTask({ commit, state, dispatch }, id) {
     commit('SET_loading', true)
     await this.$axios
-      .$delete(
-        'https://europe-west1-st-testcase.cloudfunctions.net/api/reminders/' +
-          id +
-          '?userId=' +
-          state.login.id
-      )
-      .catch((error) => {
-        if (error.response) {
-          commit('notification/PUSH_Notification', {
-            message: error.response.data.error,
-            color: 'red',
-          })
-        }
-      })
+      .$delete(URL + '/api/reminders/' + id + '?userId=' + state.login.id)
       .then(() => {
         dispatch('loadTasks').then(() => {
           commit('SET_loading', false)
@@ -135,6 +147,28 @@ export const actions = {
           })
         })
       })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          commit('notification/PUSH_Notification', {
+            message: error.response.data.error,
+            color: 'red',
+          })
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
+        }
+        console.log(error.config)
+      })
   },
 
   async updateTask({ commit, state, dispatch }, task) {
@@ -143,10 +177,7 @@ export const actions = {
     commit('SET_loading', true)
     await this.$axios
       .$put(
-        'https://europe-west1-st-testcase.cloudfunctions.net/api/reminders/' +
-          task.id +
-          '?userId=' +
-          state.login.id,
+        URL + '/api/reminders/' + task.id + '?userId=' + state.login.id,
         JSON.stringify(task.taskBody),
         {
           headers: {
@@ -154,14 +185,6 @@ export const actions = {
           },
         }
       )
-      .catch((error) => {
-        if (error.response) {
-          commit('notification/PUSH_Notification', {
-            message: error.response.data.error,
-            color: 'red',
-          })
-        }
-      })
       .then(() => {
         dispatch('loadTasks').then(() => {
           commit('SET_loading', false)
@@ -170,6 +193,28 @@ export const actions = {
             color: 'blue',
           })
         })
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          commit('notification/PUSH_Notification', {
+            message: error.response.data.error,
+            color: 'red',
+          })
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
+        }
+        console.log(error.config)
       })
   },
 }
