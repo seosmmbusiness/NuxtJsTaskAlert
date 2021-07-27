@@ -1,6 +1,10 @@
 # Tasks
 
 ## Build Setup
+[Check how it works on Vercel](https://nuxt-js-task-alert.vercel.app/)
+[Check how it works on Netlify](https://simpletaskapp-test.netlify.app/)
+
+For both used npm run generate --modern=server
 
 ```bash
 # install dependencies
