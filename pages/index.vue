@@ -1,7 +1,7 @@
 <template>
   <div class="relative bg-gray-100">
     <div class="relative flex flex-col items-center justify-center min-h-screen">
-      <img :src="require('@/assets/logo.svg')" width='50' height="40"/>
+      <img alt="taskApp" :src="require('@/assets/logo.svg')" width='50' height="40"/>
       <div class="w-full max-w-4xl">
         <Welcome v-if="!getUserData.logged" />
         <Tasks v-if="getUserData.logged" />
