@@ -3,8 +3,10 @@
 ## Build Setup
 [Check how it works on Vercel](https://nuxt-js-task-alert.vercel.app/)
 [Check how it works on Netlify](https://simpletaskapp-test.netlify.app/)
+[Check how it works on Stormkit](https://crestpeppermint-tha6o8-40662803721422.stormkit.dev/)
+[Check how it works on Firebase](https://taskapphosting.web.app/)
 
-For both used npm run generate --modern=server
+For all used npm run generate --modern
 
 ```bash
 # install dependencies
