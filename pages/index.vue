@@ -1,26 +1,26 @@
 <template>
   <div class="relative bg-gray-100">
     <div class="relative flex flex-col items-center justify-center min-h-screen">
-      <img :src="require('@/assets/logo.svg')" width='50px'/>
+      <img :src="require('@/assets/logo.svg')" width='50' height="40"/>
       <div class="w-full max-w-4xl">
         <Welcome v-if="!getUserData.logged" />
-        <Tasks v-if="getUserData.logged" />   
+        <Tasks v-if="getUserData.logged" />
       </div>
     </div>
 
-    <transition 
+    <transition
       enter-class="opacity-0"
       enter-active-class="transition duration-100 ease-in-out opacity-0"
       enter-to-class="opacity-100"
       leave-class=" opacity-100"
       leave-active-class="transition duration-300 ease-in-out"
       leave-to-class="opacity-0">
-      
+
       <Loading v-if="getLoading"/>
     </transition>
- 
+
     <NotificationsList />
- 
+
   </div>
 </template>
 
